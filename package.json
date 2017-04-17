@@ -4,7 +4,7 @@
   "description": "ReactJS and built on NodeJS, and has Firebase for storage. Mock Redit app",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node ./readitApp/bin/www"
   },
   "repository": {
     "type": "git",
