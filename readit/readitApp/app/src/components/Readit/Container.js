@@ -46,7 +46,7 @@ class Container extends React.Component {
     if(x.likedBy){
       var bFound = false;
       x.likedBy.map( (item, index) => {
-        if(item.uid === this.state.user.uid){
+        if(this.state.user && item.uid === this.state.user.uid){
           bFound = true;
           if(item.likeStatus === 1){
             item.likeStatus = 0;
@@ -80,7 +80,7 @@ class Container extends React.Component {
     if(x.likedBy){
       var bFound = false;
       x.likedBy.map( (item, index) => {
-        if(item.uid === this.state.user.uid){
+        if(this.state.user && item.uid === this.state.user.uid){
           bFound = true;
           if(item.likeStatus === 2){
             item.likeStatus = 0;

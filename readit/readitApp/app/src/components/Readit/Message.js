@@ -14,17 +14,16 @@ componentWillReceiveProps(props) {
   }
 
   render(){
-
+   console.log("messages");
     var likedBy = this.props.post.likedBy;
     var likedStatus = 0;
     if(likedBy){
       likedBy.map( (item, index) => {
-        if(item.uid === this.state.user.uid){
+        if(this.state.user && item.uid === this.state.user.uid){
           likedStatus = item.likeStatus;
         }
       });
     }
-
 
     var eleDeleteButton, eleLikeDislike;
     if (this.props.authed && this.state.user && this.props.post.uid === this.state.user.uid) {
