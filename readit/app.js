@@ -6,7 +6,7 @@ var routes = require('./routes/index');
 
 var app = express();
 /* #PublicFolder */
-app.use(express.static(path.join(__dirname, 'readitApp', 'app')));
+app.use(express.static(path.join(__dirname, 'readitapp', 'app', 'dist')));
 
 app.use(function(req, res, next) { 
     if (req.headers.origin) {
