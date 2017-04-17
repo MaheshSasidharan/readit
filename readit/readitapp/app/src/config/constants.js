@@ -1,3 +1,4 @@
+// Use common source for firebase config
 import Rebase from 're-base';
 export const base = Rebase.createClass({
   apiKey: "AIzaSyDIG_QmcoafiItEhHJlrVfFKDCa-iP88a0",

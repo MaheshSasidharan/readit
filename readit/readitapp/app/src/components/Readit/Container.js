@@ -143,15 +143,15 @@ class Container extends React.Component {
 
       return (
       <div className='col-md-12'>
-    {/*<div>Authed {sAuthed}</div>*/}
-  {/*<div>User {userName}</div>*/}
-  <div className='col-md-12'>
-  <div className='col-md-8'>
-  <h1>{ (this.state.messages.length || 0) + ' messages' }</h1>
-  <div className='row'>{ messages }</div>
-  </div>
-  </div>
-  </div>
+      {/*<div>Authed {sAuthed}</div>*/}
+      {/*<div>User {userName}</div>*/}
+        <div className='col-md-12'>
+          <div className='col-md-8'>
+              <h1>{ (this.state.messages.length || 0) + ' messages' }</h1>
+              <div className='row'>{ messages }</div>
+          </div>
+          </div>
+      </div>
   );
 }
 }

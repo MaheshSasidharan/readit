@@ -86,57 +86,57 @@ export default class LoginApp extends Component {
 
     return (
       <BrowserRouter>
-      <div>
-      <nav className="navbar navbar-default navbar-static-top">
-      <div className="container">
-      <div className="navbar-header">
-      <Link to="/" className="navbar-brand">Readit</Link>
-      </div>
-      <ul className="nav navbar-nav pull-right">
-      <li>
-      <div className="navbar-brand">
-        Welcome {sUserName}
-      </div>
-      </li>
-      <li>
-      <Link to="/" className="navbar-brand">Home</Link>
-      </li>
-      {/* <li>
-       <Link to="/dashboard" className="navbar-brand">Dashboard</Link>
-       </li>
-      */}
-      <li>
-      {this.state.authed
-        ? <button
-        style={{border: 'none', background: 'transparent'}}
-        onClick={() => {
-          this.logout()
-        }}
-        className="navbar-brand">Logout</button>
-        : <span>
-        <Link to="/login" className="navbar-brand">Login</Link>
-        </span>}
-        </li>
-        </ul>
+        <div>
+          <nav className="navbar navbar-default navbar-static-top">
+           <div className="container">
+            <div className="navbar-header">
+         <Link to="/" className="navbar-brand">Readit</Link>
         </div>
-        </nav>
-        <div className="container">
-          <div className="row">
-            <Switch>
-              <ReadItPassProp path='/' authed={this.state.authed} user={this.state.user} exact component={Readit} />
-              <PublicRoute loginStatus_Parent2={this.loginStatus_Parent1} authed={this.state.authed} path='/login' component={Login} />
-              <PrivateRoute authed={this.state.authed} path='/dashboard' component={Readit} />
-              <Route render={() => 
-                <div>
-                    <h3>Welcome to Readit. Totally original app. Nothing to do with reddit. </h3>
-                    Click on <i><b>Home</b></i> to started. <br/>
-                    You will only be able to view the posts. Please <i><b>Login</b></i> to add posts.
-                </div>
-             } />
-            </Switch>
-           </div>
+        <ul className="nav navbar-nav pull-right">
+          <li>
+            <div className="navbar-brand">
+             Welcome {sUserName}
           </div>
-        </div>
+          </li>
+        <li>
+        <Link to="/" className="navbar-brand">Home</Link>
+        </li>
+        {/* <li>
+         <Link to="/dashboard" className="navbar-brand">Dashboard</Link>
+         </li>
+        */}
+        <li>
+        {this.state.authed
+          ? <button
+          style={{border: 'none', background: 'transparent'}}
+          onClick={() => {
+            this.logout()
+          }}
+          className="navbar-brand">Logout</button>
+          : <span>
+          <Link to="/login" className="navbar-brand">Login</Link>
+          </span>}
+          </li>
+          </ul>
+          </div>
+          </nav>
+          <div className="container">
+            <div className="row">
+              <Switch>
+                <ReadItPassProp path='/' authed={this.state.authed} user={this.state.user} exact component={Readit} />
+                <PublicRoute loginStatus_Parent2={this.loginStatus_Parent1} authed={this.state.authed} path='/login' component={Login} />
+                <PrivateRoute authed={this.state.authed} path='/dashboard' component={Readit} />
+                <Route render={() => 
+                  <div>
+                      <h3>Welcome to Readit. Totally original app. Nothing to do with reddit. </h3>
+                      Click on <i><b>Home</b></i> to started. <br/>
+                      You will only be able to view the posts. Please <i><b>Login</b></i> to add posts.
+                  </div>
+               } />
+              </Switch>
+             </div>
+            </div>
+          </div>
      </BrowserRouter>
         );
   }
