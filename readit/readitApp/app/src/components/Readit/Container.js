@@ -10,7 +10,8 @@ class Container extends React.Component {
     this.state = {
       messages: [],
       show: null,
-      authed: props.authed
+      authed: props.authed,
+      user: props.user
     }
   }
   componentWillMount(){
@@ -33,7 +34,7 @@ class Container extends React.Component {
     });
   }
   componentWillReceiveProps(props) {
-    this.setState({authed: props.authed});
+    this.setState({authed: props.authed, user:props.user });
   }
   componentWillUnmount(){
     base.removeBinding(this.ref);
@@ -71,7 +72,8 @@ class Container extends React.Component {
       return (
         <Message
           authed={this.state.authed}
-          thread={ item }
+          user={this.state.user}
+          post={ item }
           show={ this.state.show === index }
           removeMessage={ this._removeMessage.bind(this, index) }
           handleClick={ this._toggleView.bind(this, index) }
@@ -80,14 +82,16 @@ class Container extends React.Component {
     });
 
     var sAuthed = this.state.authed ? 'TRUE' : 'FALSE';
+    var userName = this.state.user ? this.state.user.displayName : "NONE";
 
     return (
     <div>
       {/*<div>Authed {sAuthed}</div>*/}
+      {/*<div>User {userName}</div>*/}
         <div className='col-md-12'>
           <div className='col-md-8'>
             <h1>{ (this.state.messages.length || 0) + ' messages' }</h1>
-            <ul>{ messages }</ul>
+            <div className='row'>{ messages }</div>
           </div>
         </div>
       </div>

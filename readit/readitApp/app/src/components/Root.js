@@ -27,11 +27,11 @@ function PublicRoute ({component: Component, loginStatus_Parent2, authed, ...res
       )
 }
 
-function ReadItPassProp ({component: Component, authed, ...rest}) {
+function ReadItPassProp ({component: Component, authed, user, ...rest}) {
   return (
     <Route
     {...rest}
-    render={(props) => <Component authed={authed} {...props}/>}
+    render={(props) => <Component authed={authed} user={user} {...props}/>}
       />
   )
 }
@@ -65,6 +65,7 @@ export default class LoginApp extends Component {
 
   loginStatus_Parent1(authVal, userInfo){
     this.setState({authed: authVal, user: userInfo});
+    //this.forceUpdate();
   }
 
   logout(){
@@ -114,7 +115,7 @@ export default class LoginApp extends Component {
         <div className="container">
           <div className="row">
             <Switch>
-              <ReadItPassProp path='/' authed={this.state.authed} exact component={Readit} />
+              <ReadItPassProp path='/' authed={this.state.authed} user={this.state.user} exact component={Readit} />
               <PublicRoute loginStatus_Parent2={this.loginStatus_Parent1} authed={this.state.authed} path='/login' component={Login} />
               <PrivateRoute authed={this.state.authed} path='/dashboard' component={Readit} />
               <Route render={() => 

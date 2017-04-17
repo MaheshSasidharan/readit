@@ -12,9 +12,11 @@ import { base } from '../../config/constants'
 export class Readit extends React.Component {
   constructor(props){
     super(props);
+    this.authDataCallback = this.authDataCallback.bind(this);
     this.state = {
       messages: [],
-      authed: props.authed
+      authed: props.authed,
+      user: props.user
     };
   }
   componentWillMount(){
@@ -26,19 +28,40 @@ export class Readit extends React.Component {
  }
 
  componentWillReceiveProps(props) {
-  this.setState({authed: props.authed});
+  this.setState({authed: props.authed, user:props.user});
   }
+
+  componentDidMount () {
+    this.unsubscribe = base.onAuth(this.authDataCallback);
+  }
+  componentWillUnmount () {
+    this.unsubscribe();
+  }
+
+  authDataCallback(user) {
+    if (user) {
+      this.loginStatus_Child(true, user.providerData[0]);
+    } else {
+      this.loginStatus_Child(false, null);
+    }
+  }
+
+  loginStatus_Child(authVal, userInfo){
+    this.setState({authed: authVal, user: userInfo});
+    //this.forceUpdate();
+  }
+
   render(){
     var oNewChat;
     if (this.state.authed) {
-        oNewChat = <NewChat authed={this.state.authed} chats={ this.state.messages } />
+        oNewChat = <NewChat authed={this.state.authed} user={this.state.user} chats={ this.state.messages } />
     } 
 
 
     return (
       <div style={ { paddingTop: '30px' } }>
       { oNewChat }
-      <Container authed={this.state.authed} />
+      <Container authed={this.state.authed} user={this.state.user}/>
       </div>
       )
     }
