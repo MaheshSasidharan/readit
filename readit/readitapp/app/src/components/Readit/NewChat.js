@@ -18,6 +18,7 @@ componentWillReceiveProps(props) {
   }
 
   _newChat(e){
+    // Add new text into firebase, it will add data into reach component as well
     e.preventDefault();
      base.post('chats', {
       data: this.props.chats.concat([{
@@ -38,10 +39,10 @@ componentWillReceiveProps(props) {
    render(){
     return (
       <div className='col-md-12 row'>
-      <form onSubmit={ this._newChat.bind(this) } className='form-group col-md-8'>
-      <textarea ref='message'  placeholder='Enter your post here' className='form-control' />
-      <input type='submit' className='btn btn-success' style={{marginTop: '10px'}}/>
-      </form>
+        <form onSubmit={ this._newChat.bind(this) } className='form-group col-md-8'>
+        <textarea ref='message'  placeholder='Enter your post here' className='form-control' />
+        <input type='submit' className='btn btn-success' style={{marginTop: '10px'}}/>
+        </form>
       </div>
       )
   }

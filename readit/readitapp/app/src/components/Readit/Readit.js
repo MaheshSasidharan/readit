@@ -10,6 +10,7 @@ import NewChat from './NewChat';
 import { base } from '../../config/constants'
 
 export class Readit extends React.Component {
+  // Get logged in user's information
   constructor(props){
     super(props);
     this.authDataCallback = this.authDataCallback.bind(this);
@@ -53,6 +54,7 @@ export class Readit extends React.Component {
 
   render(){
     var oNewChat;
+    /*Show only if user is logged in*/
     if (this.state.authed) {
         oNewChat = <NewChat authed={this.state.authed} user={this.state.user} chats={ this.state.messages } />
     } 

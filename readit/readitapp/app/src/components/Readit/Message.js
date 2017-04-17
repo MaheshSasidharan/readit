@@ -25,6 +25,7 @@ componentWillReceiveProps(props) {
       });
     }
 
+    /* Show delete button to only logged in user */
     var eleDeleteButton, eleLikeDislike;
     if (this.props.authed && this.state.user && this.props.post.uid === this.state.user.uid) {
         eleDeleteButton = <button
@@ -32,7 +33,7 @@ componentWillReceiveProps(props) {
             className='btn btn-danger pull-right'>X
           </button>;        
     }
-
+    /* Like or dislike */
     eleLikeDislike = <span className="pull-right">
                         <i onClick={ this.props.likeMessage.bind(null)} className={"glyphicon glyphicon-thumbs-up " + (likedStatus == 1 ? 'text-info' : '')} style={{marginRight: '10px', 'cursor': 'pointer'}}></i>
                         <i onClick={ this.props.dislikeMessage.bind(null)} className={"glyphicon glyphicon-thumbs-down " + (likedStatus == 2 ? 'text-info' : '')} style={{'cursor': 'pointer'}}></i>

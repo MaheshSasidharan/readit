@@ -6,6 +6,7 @@ import { Readit } from './Readit/Readit'
 import { base } from '../config/constants'
 
 function PrivateRoute ({component: Component, authed, ...rest}) {
+  // This is for provate route. We can add logic here to show User profile. I have not add this here
   return (
     <Route
     {...rest}
@@ -17,6 +18,8 @@ function PrivateRoute ({component: Component, authed, ...rest}) {
 }
 
 function PublicRoute ({component: Component, loginStatus_Parent2, authed, ...rest}) {
+  // This is for all the public components
+  // Notice the props being passed to children, so that the child can talk to parent
   return (
     <Route
     {...rest}
@@ -28,6 +31,7 @@ function PublicRoute ({component: Component, loginStatus_Parent2, authed, ...res
 }
 
 function ReadItPassProp ({component: Component, authed, user, ...rest}) {
+  // This is used to pass user and authed property to child component. Since it is coming from Router, it needs to be parsed using funtion
   return (
     <Route
     {...rest}
@@ -39,6 +43,7 @@ function ReadItPassProp ({component: Component, authed, user, ...rest}) {
 export default class LoginApp extends Component {
   constructor(props){
     super(props);
+    // Firebase callback is in a differnt context. So bind 'this' so that context remains this class (LoginApp)
     this.loginStatus_Parent1 = this.loginStatus_Parent1.bind(this);
     this.authDataCallback = this.authDataCallback.bind(this);
     
@@ -56,6 +61,7 @@ export default class LoginApp extends Component {
   }
 
   authDataCallback(user) {
+    // On load, check the logged in status, and refresh accordingly
     if (user) {
       this.loginStatus_Parent1(true, user.providerData[0]);
     } else {
@@ -64,16 +70,18 @@ export default class LoginApp extends Component {
   }
 
   loginStatus_Parent1(authVal, userInfo){
+    // This will trigger the change of state values into all components
     this.setState({authed: authVal, user: userInfo});
     //this.forceUpdate();
   }
 
   logout(){
+    // Logout from app
     base.unauth();
   }
 
   render() {
-
+    /* Show loggedin user */
     var sUserName = this.state.authed ? this.state.user.displayName : "User";
 
     return (

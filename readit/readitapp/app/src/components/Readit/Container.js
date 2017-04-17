@@ -15,18 +15,7 @@ class Container extends React.Component {
     }
   }
   componentWillMount(){
-
-    /*
-     * We bind the 'chats' firebase endopint to our 'messages' state.
-     * Anytime the firebase updates, it will call 'setState' on this component
-     * with the new state.
-     *
-     * Any time we call 'setState' on our 'messages' state, it will
-     * updated the Firebase '/chats' endpoint. Firebase will then emit the changes,
-     * which causes our local instance (and any other instances) to update
-     * state to reflect those changes.
-     */
-
+    // Get all chats from firebase
      this.ref = base.syncState('chats', {
       context: this,
       state: 'messages',
@@ -40,14 +29,18 @@ class Container extends React.Component {
     base.removeBinding(this.ref);
   }
   _likeMessage(index, e){
+  // get curretn post
+
     e.stopPropagation();
     var arr = this.state.messages.concat([]);
     var x = arr[index];
+    // If liked by exists, check if current user has liked it
     if(x.likedBy){
       var bFound = false;
       x.likedBy.map( (item, index) => {
         if(this.state.user && item.uid === this.state.user.uid){
           bFound = true;
+          // If current user had previously liked it, then un-like it, else like it
           if(item.likeStatus === 1){
             item.likeStatus = 0;
           }else{
@@ -55,12 +48,15 @@ class Container extends React.Component {
           }
         }
       });
+
+      //If current user has not liked yet, then like it
       if(!bFound){
         x.likedBy.push({
           likeStatus: 1,
           uid: this.state.user.uid
         });
       }else{
+        // If no one has ever liked it, then create new 'like' object and add user
         x.likedBy = [];
         x.likedBy.push({
           likeStatus: 1,
@@ -110,16 +106,11 @@ class Container extends React.Component {
 
   }
   _removeMessage(index, e){
+    // To delete, just create a copy of chats (to be efficient - update only required DOM)
     e.stopPropagation();
     var arr = this.state.messages.concat([]);
+    // Remove the post to be deleted, and save to firebase using setState (because syncState is ON)
     arr.splice(index, 1);
-
-    /*
-     * Calling setState here will update the '/chats' ref on our Firebase.
-     * Notice that I'm also updating the 'show' state.  Because there is no
-     * binding to our 'show' state, it will update the local 'show' state normally,
-     * without going to Firebase.
-     */
 
      this.setState({
       messages: arr,
@@ -127,12 +118,6 @@ class Container extends React.Component {
     });
    }
    _toggleView(index){
-
-    /*
-     * Because nothing is bound to our 'show' state, calling
-     * setState on 'show' here will do nothing with Firebase,
-     * but simply update our local state like normal.
-     */
      this.setState({
       show: index
     });
