@@ -10,7 +10,7 @@ function PrivateRoute ({component: Component, authed, ...rest}) {
     <Route
     {...rest}
     render={(props) => authed === true
-      ? <Component {...props} />
+      ? <Component authed={authed} {...props} />
       : <Redirect to={{pathname: '/login', state: {from: props.location}}} />}
       />
       )
@@ -25,6 +25,15 @@ function PublicRoute ({component: Component, loginStatus_Parent2, authed, ...res
       : <Redirect to='/dashboard' />}
       />
       )
+}
+
+function ReadItPassProp ({component: Component, authed, ...rest}) {
+  return (
+    <Route
+    {...rest}
+    render={(props) => <Component authed={authed} {...props}/>}
+      />
+  )
 }
 
 export default class LoginApp extends Component {
@@ -55,7 +64,6 @@ export default class LoginApp extends Component {
   }
 
   loginStatus_Parent1(authVal, userInfo){
-    console.log("User:" + JSON.stringify(userInfo));
     this.setState({authed: authVal, user: userInfo});
   }
 
@@ -103,12 +111,10 @@ export default class LoginApp extends Component {
         </ul>
         </div>
         </nav>
-
-
         <div className="container">
           <div className="row">
             <Switch>
-              <Route path='/' exact component={Readit} />
+              <ReadItPassProp path='/' authed={this.state.authed} exact component={Readit} />
               <PublicRoute loginStatus_Parent2={this.loginStatus_Parent1} authed={this.state.authed} path='/login' component={Login} />
               <PrivateRoute authed={this.state.authed} path='/dashboard' component={Readit} />
               <Route render={() => 

@@ -5,6 +5,12 @@ import ReactDOM from 'react-dom';
 import { base } from '../../config/constants'
 
 class NewChat extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      authed: props.authed
+    };
+  }
   _newChat(e){
     e.preventDefault();
      base.post('chats', {

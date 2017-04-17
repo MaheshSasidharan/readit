@@ -6,15 +6,15 @@ import {
   Link
 } from 'react-router-dom'
 import Container from './Container';
-import NewChat1 from './NewChat';
+import NewChat from './NewChat';
 import { base } from '../../config/constants'
 
 export class Readit extends React.Component {
   constructor(props){
-    console.log("App");
     super(props);
     this.state = {
-      messages: []
+      messages: [],
+      authed: props.authed
     };
   }
   componentWillMount(){
@@ -24,12 +24,22 @@ export class Readit extends React.Component {
     asArray: true
   });
  }
- render(){
-  return (
-    <div style={ { paddingTop: '30px' } }>
-    <NewChat1 chats={ this.state.messages } />
-    <Container />
-    </div>
-    )
+
+ componentWillReceiveProps(props) {
+  this.setState({authed: props.authed});
   }
+  render(){
+    var oNewChat;
+    if (this.state.authed) {
+        oNewChat = <NewChat authed={this.state.authed} chats={ this.state.messages } />
+    } 
+
+
+    return (
+      <div style={ { paddingTop: '30px' } }>
+      { oNewChat }
+      <Container authed={this.state.authed} />
+      </div>
+      )
+    }
 }

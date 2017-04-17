@@ -6,11 +6,11 @@ import { base } from '../../config/constants'
 
 class Container extends React.Component {
   constructor(props){
-    console.log("Container");
     super(props);
     this.state = {
       messages: [],
-      show: null
+      show: null,
+      authed: props.authed
     }
   }
   componentWillMount(){
@@ -32,14 +32,10 @@ class Container extends React.Component {
       asArray: true
     });
   }
+  componentWillReceiveProps(props) {
+    this.setState({authed: props.authed});
+  }
   componentWillUnmount(){
-    /*
-     * When the component unmounts, we remove the binding.
-     * Invoking syncState (or bindToState or listenTo)
-     * will return a reference to that listener (see line 30).
-     * You will use that ref to remove the binding here.
-     */
-
     base.removeBinding(this.ref);
   }
   _removeMessage(index, e){
@@ -74,6 +70,7 @@ class Container extends React.Component {
     var messages = this.state.messages.map( (item, index) => {
       return (
         <Message
+          authed={this.state.authed}
           thread={ item }
           show={ this.state.show === index }
           removeMessage={ this._removeMessage.bind(this, index) }
@@ -82,11 +79,16 @@ class Container extends React.Component {
       );
     });
 
+    var sAuthed = this.state.authed ? 'TRUE' : 'FALSE';
+
     return (
-      <div className='col-md-12'>
-        <div className='col-md-8'>
-          <h1>{ (this.state.messages.length || 0) + ' messages' }</h1>
-          <ul>{ messages }</ul>
+    <div>
+      {/*<div>Authed {sAuthed}</div>*/}
+        <div className='col-md-12'>
+          <div className='col-md-8'>
+            <h1>{ (this.state.messages.length || 0) + ' messages' }</h1>
+            <ul>{ messages }</ul>
+          </div>
         </div>
       </div>
     );
