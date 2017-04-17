@@ -39,8 +39,8 @@ componentWillReceiveProps(props) {
     return (
       <div className='col-md-12'>
       <form onSubmit={ this._newChat.bind(this) } className='form-group col-md-8'>
-      <textarea ref='message'  placeholder='Message' className='form-control' />
-      <input type='submit' className='btn btn-success' />
+      <textarea ref='Enter your post here'  placeholder='Message' className='form-control' />
+      <input type='submit' className='btn btn-success pull-right' style={{marginTop: '10px'}}/>
       </form>
       </div>
       )

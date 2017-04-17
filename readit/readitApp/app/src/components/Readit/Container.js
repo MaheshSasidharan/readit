@@ -27,17 +27,87 @@ class Container extends React.Component {
      * state to reflect those changes.
      */
 
-    this.ref = base.syncState('chats', {
+     this.ref = base.syncState('chats', {
       context: this,
       state: 'messages',
       asArray: true
     });
-  }
-  componentWillReceiveProps(props) {
+   }
+   componentWillReceiveProps(props) {
     this.setState({authed: props.authed, user:props.user });
   }
   componentWillUnmount(){
     base.removeBinding(this.ref);
+  }
+  _likeMessage(index, e){
+    e.stopPropagation();
+    var arr = this.state.messages.concat([]);
+    var x = arr[index];
+    if(x.likedBy){
+      var bFound = false;
+      x.likedBy.map( (item, index) => {
+        if(item.uid === this.state.user.uid){
+          bFound = true;
+          if(item.likeStatus === 1){
+            item.likeStatus = 0;
+          }else{
+            item.likeStatus = 1;
+          }
+        }
+      });
+      if(!bFound){
+        x.likedBy.push({
+          likeStatus: 1,
+          uid: this.state.user.uid
+        });
+      }else{
+        x.likedBy = [];
+        x.likedBy.push({
+          likeStatus: 1,
+          uid: this.state.user.uid
+        });
+      }
+
+      this.setState({
+        messages: arr
+      });
+    }
+  }
+  _dislikeMessage(index, e){
+    e.stopPropagation();
+    var arr = this.state.messages.concat([]);
+    var x = arr[index];
+    if(x.likedBy){
+      var bFound = false;
+      x.likedBy.map( (item, index) => {
+        if(item.uid === this.state.user.uid){
+          bFound = true;
+          if(item.likeStatus === 2){
+            item.likeStatus = 0;
+          }else{
+            item.likeStatus = 2;
+          }
+        }
+      });
+
+      if(!bFound){
+        x.likedBy.push({
+          likeStatus: 2,
+          uid: this.state.user.uid
+        });
+      }
+    }else{
+      x.likedBy = [];
+      x.likedBy.push({
+        likeStatus: 2,
+        uid: this.state.user.uid
+      });
+    }
+
+    this.setState({
+      messages: arr
+    });
+
   }
   _removeMessage(index, e){
     e.stopPropagation();
@@ -51,52 +121,54 @@ class Container extends React.Component {
      * without going to Firebase.
      */
 
-    this.setState({
+     this.setState({
       messages: arr,
       show: null
     });
-  }
-  _toggleView(index){
+   }
+   _toggleView(index){
 
     /*
      * Because nothing is bound to our 'show' state, calling
      * setState on 'show' here will do nothing with Firebase,
      * but simply update our local state like normal.
      */
-    this.setState({
+     this.setState({
       show: index
     });
-  }
-  render(){
+   }
+   render(){
     var messages = this.state.messages.map( (item, index) => {
       return (
         <Message
-          authed={this.state.authed}
-          user={this.state.user}
-          post={ item }
-          show={ this.state.show === index }
-          removeMessage={ this._removeMessage.bind(this, index) }
-          handleClick={ this._toggleView.bind(this, index) }
-          key={ index } />
-      );
-    });
+        authed={this.state.authed}
+        user={this.state.user}
+        post={ item }
+        show={ this.state.show === index }
+        likeMessage={ this._likeMessage.bind(this, index) }
+        dislikeMessage={ this._dislikeMessage.bind(this, index) }
+        removeMessage={ this._removeMessage.bind(this, index) }
+        handleClick={ this._toggleView.bind(this, index) }
+        key={ index } />
+        );
+      });
 
-    var sAuthed = this.state.authed ? 'TRUE' : 'FALSE';
-    var userName = this.state.user ? this.state.user.displayName : "NONE";
+      var sAuthed = this.state.authed ? 'TRUE' : 'FALSE';
+      var userName = this.state.user ? this.state.user.displayName : "NONE";
 
-    return (
-    <div>
-      {/*<div>Authed {sAuthed}</div>*/}
-      {/*<div>User {userName}</div>*/}
-        <div className='col-md-12'>
-          <div className='col-md-8'>
-            <h1>{ (this.state.messages.length || 0) + ' messages' }</h1>
-            <div className='row'>{ messages }</div>
-          </div>
-        </div>
-      </div>
-    );
-  }
+      return (
+      <div className='col-md-12'>
+    {/*<div>Authed {sAuthed}</div>*/}
+  {/*<div>User {userName}</div>*/}
+  <div className='col-md-12'>
+  <div className='col-md-8'>
+  <h1>{ (this.state.messages.length || 0) + ' messages' }</h1>
+  <div className='row'>{ messages }</div>
+  </div>
+  </div>
+  </div>
+  );
+}
 }
 
 export default Container
